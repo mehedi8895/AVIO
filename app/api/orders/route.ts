@@ -49,9 +49,10 @@ function getClientIp(req: Request) {
 }
 
 function htmlEscape(value: string) {
-  return value.replace(/[&<>"']/g, (char) => ({
+  const entities: Record<string, string> = {
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
-  })[char] || char);
+  };
+  return value.replace(/[&<>"']/g, (char) => entities[char] ?? char);
 }
 
 async function sendOrderNotification(order: unknown) {
