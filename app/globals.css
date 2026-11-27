@@ -149,3 +149,215 @@ button:disabled{cursor:wait;opacity:.7}
   .price{font-size:16px}
   .productbuttons .primary,.productbuttons .outline{font-size:10px}
 }
+
+
+/* Mobile checkout/payment layout: align fields and payment controls cleanly on phones */
+@media (max-width: 700px) {
+  .shade {
+    align-items: flex-start;
+    justify-content: center;
+    padding: max(8px, env(safe-area-inset-top)) 8px max(8px, env(safe-area-inset-bottom));
+    overflow-y: auto;
+  }
+  .dialog.checkout {
+    width: 100%;
+    max-width: 560px;
+    max-height: calc(100dvh - 16px);
+    padding: 18px 14px 20px;
+    border-radius: 18px;
+    margin: 0;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+  }
+  .checkout .x {
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+  }
+  .checkoutbrand {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 7px;
+    padding-right: 38px;
+    margin-bottom: 12px;
+  }
+  .checkoutbrand img { width: 78px; }
+  .checkout .dialog h2,
+  .checkout h2 {
+    font-size: 22px;
+    line-height: 1.25;
+    margin: 8px 0 14px;
+    overflow-wrap: anywhere;
+  }
+  .checkout .summary {
+    padding: 13px;
+    margin-bottom: 12px;
+    overflow-wrap: anywhere;
+  }
+  .checkout .summary p { line-height: 1.5; }
+  .checkout .sendmoney-instructions {
+    padding: 14px;
+    margin: 12px 0;
+    border-radius: 14px;
+  }
+  .checkout .sendmoney-label { align-items: center; gap: 10px; }
+  .checkout .sendmoney-label b { font-size: 13px; letter-spacing: .06em; }
+  .checkout .sendmoney-label small { font-size: 10px; line-height: 1.4; }
+  .checkout .sendmoney-instructions > p { font-size: 12px; line-height: 1.65; }
+  .checkout .sendmoney-instructions ol { font-size: 11px; line-height: 1.6; }
+  .checkout .paymentmethods {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin: 12px 0;
+  }
+  .checkout .paymentmethods button {
+    min-height: 58px;
+    width: 100%;
+    padding: 10px 12px;
+    gap: 10px;
+    border-radius: 12px;
+  }
+  .checkout .payment-logo {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 9px;
+  }
+  .checkout .payment-logo img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .checkout .paymentmethods button > span:nth-child(2) {
+    min-width: 0;
+    flex: 1;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+  .checkout .paymentmethods button small {
+    white-space: normal;
+    font-size: 10px;
+    line-height: 1.35;
+  }
+  .checkout .payment-check { margin-left: auto; }
+  .checkout .paynum {
+    width: 100%;
+    min-width: 0;
+    padding: 15px 10px;
+    margin: 8px 0;
+    font-size: clamp(20px, 6vw, 26px);
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    border: 1px solid #514326;
+    background: #17150f;
+    border-radius: 13px;
+  }
+  .checkout .accountchoices {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin: 10px 0;
+  }
+  .checkout .accountchoices button {
+    width: 100%;
+    min-width: 0;
+    padding: 13px;
+    gap: 5px;
+    border-radius: 12px;
+  }
+  .checkout .accountchoices button b {
+    font-size: 12px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+  .checkout .accountchoices button small {
+    font-size: 11px;
+    line-height: 1.5;
+    white-space: normal;
+  }
+  .checkout .help {
+    font-size: 12px;
+    line-height: 1.65;
+    padding: 12px;
+    margin: 12px 0;
+    overflow-wrap: anywhere;
+  }
+  .checkout .orderform {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    width: 100%;
+  }
+  .checkout .orderform label,
+  .checkout .orderform .wide {
+    grid-column: 1;
+    min-width: 0;
+    width: 100%;
+    gap: 7px;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .checkout .orderform input:not([type="checkbox"]),
+  .checkout .orderform textarea {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+    padding: 13px 12px;
+    font-size: 16px;
+    line-height: 1.4;
+    border-radius: 11px;
+    box-sizing: border-box;
+  }
+  .checkout .orderform textarea { min-height: 96px; }
+  .checkout .orderform .sendmoney-confirm {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start;
+    gap: 10px !important;
+    padding: 12px;
+    font-size: 12px !important;
+    line-height: 1.6;
+  }
+  .checkout .orderform .sendmoney-confirm input[type="checkbox"] {
+    display: block;
+    width: 20px !important;
+    height: 20px;
+    flex: 0 0 20px;
+    margin: 2px 0 0;
+  }
+  .checkout .orderform .sendmoney-confirm span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .checkout .orderform button.primary.full {
+    grid-column: 1;
+    width: 100%;
+    min-height: 52px;
+    margin-top: 2px;
+    padding: 13px 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .checkout .notice {
+    font-size: 13px;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+}
+@media (max-width: 390px) {
+  .dialog.checkout { padding: 16px 11px 18px; }
+  .checkout h2 { font-size: 20px; }
+  .checkout .sendmoney-icon { width: 36px; height: 36px; flex-basis: 36px; }
+  .checkout .paymentmethods button { padding: 9px; }
+  .checkout .orderform button.primary.full { font-size: 12px; }
+}
