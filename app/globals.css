@@ -149,3 +149,43 @@ button:disabled{cursor:wait;opacity:.7}
   .price{font-size:16px}
   .productbuttons .primary,.productbuttons .outline{font-size:10px}
 }
+
+/* Mobile checkout layout and payment selection polish */
+@media(max-width:700px){
+.shade{align-items:flex-start;justify-content:center;padding:10px 10px max(10px,env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain}
+.dialog.checkout{width:100%;max-width:540px;max-height:calc(100dvh - 20px);margin:auto 0;padding:18px 15px 20px;border-radius:18px;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.checkout .x{right:12px;top:12px;width:34px;height:34px}
+.checkoutbrand{gap:10px;padding-right:36px;margin-bottom:8px}.checkoutbrand img{width:72px;max-width:28%;height:auto}.checkoutbrand .eyebrow{font-size:9px;line-height:1.4;letter-spacing:.12em}
+.checkout h2{font-size:clamp(21px,6vw,27px);line-height:1.15;margin:8px 0 16px}
+.checkout .summary{padding:13px 14px;margin-bottom:12px}.checkout .summary p{font-size:12px;line-height:1.5;overflow-wrap:anywhere}.checkout .summary b{font-size:15px}
+.sendmoney-instructions{margin:12px 0;padding:14px;border-radius:14px}.sendmoney-label{gap:10px}.sendmoney-icon{width:36px;height:36px;flex-basis:36px}.sendmoney-label b{font-size:13px}.sendmoney-label small{font-size:10px;line-height:1.4}.sendmoney-instructions>p{font-size:12px;line-height:1.6;margin:11px 0}.sendmoney-instructions ol{font-size:11px;line-height:1.55;gap:5px;padding-left:19px}
+.checkout .paymentmethods{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0;align-items:stretch}
+.checkout .paymentmethods button{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:7px;min-width:0;min-height:104px;padding:12px 5px 10px;border-radius:13px;text-align:center;transform:none}
+.checkout .paymentmethods button:hover{transform:none}
+.checkout .paymentmethods .payment-logo{width:40px;height:40px;flex:0 0 40px;display:grid;place-items:center;margin:0}
+.checkout .paymentmethods .payment-logo img{display:block;width:38px;height:38px;max-width:100%;object-fit:contain;margin:0}
+.checkout .paymentmethods button>span:nth-child(2){display:block;flex:0 1 auto;width:100%;min-width:0;text-align:center;font-size:12px;line-height:1.25;overflow-wrap:anywhere}
+.checkout .paymentmethods button small{display:block;font-size:9px;line-height:1.25;white-space:normal;margin-top:4px}
+.checkout .paymentmethods .payment-check{position:absolute;top:7px;right:7px;width:15px;height:15px;flex:0 0 15px;margin:0;font-size:9px}
+.checkout .paynum{margin:10px 0;padding:14px 10px;font-size:clamp(19px,5.5vw,24px);line-height:1.25;letter-spacing:.025em;overflow-wrap:anywhere;word-break:break-word}
+.checkout .accountchoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}
+.checkout .accountchoices button{min-width:0;padding:12px 10px;border-radius:12px;gap:6px;overflow-wrap:anywhere}
+.checkout .accountchoices button b{font-size:12px;line-height:1.35}.checkout .accountchoices button small{font-size:10px;line-height:1.45;white-space:normal}
+.checkout .help{font-size:11px;line-height:1.6;padding:12px;margin:10px 0}
+.checkout .orderform{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;width:100%;min-width:0}
+.checkout .orderform label{display:flex;flex-direction:column;gap:6px;width:100%;min-width:0;font-size:11px;line-height:1.45}
+.checkout .orderform label.wide,.checkout .orderform button{grid-column:1;min-width:0}
+.checkout .orderform input:not([type=checkbox]),.checkout .orderform textarea{display:block;width:100%;min-width:0;max-width:100%;padding:13px 12px;border-radius:11px;font-size:16px;line-height:1.4}
+.checkout .orderform textarea{min-height:88px}
+.checkout .orderform .sendmoney-confirm{display:flex!important;flex-direction:row!important;align-items:flex-start;gap:9px;padding:12px;font-size:11px!important;line-height:1.55}
+.checkout .orderform .sendmoney-confirm input{width:18px!important;height:18px;flex:0 0 18px;margin:1px 0 0;accent-color:#d6ad46}
+.checkout .orderform .sendmoney-confirm span{min-width:0;overflow-wrap:anywhere}
+.checkout .primary.full{width:100%;min-height:52px;padding:13px 12px;white-space:normal;line-height:1.45;font-size:13px;border-radius:12px}
+.checkout .success{padding:16px;overflow-wrap:anywhere}.checkout .success .primary{width:100%;text-align:center;white-space:normal}.checkout .notice{font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+}
+@media(max-width:380px){
+.dialog.checkout{padding:16px 12px 18px}.checkout .paymentmethods{gap:6px}.checkout .paymentmethods button{min-height:96px;padding:10px 3px}
+.checkout .paymentmethods .payment-logo{width:34px;height:34px;flex-basis:34px}.checkout .paymentmethods .payment-logo img{width:33px;height:33px}
+.checkout .paymentmethods button>span:nth-child(2){font-size:11px}.checkout .paymentmethods button small{font-size:8px}
+.checkout .accountchoices button{padding:10px 8px}.checkout .accountchoices button b{font-size:11px}.checkout .accountchoices button small{font-size:9px}
+}
