@@ -365,3 +365,31 @@ button:disabled{cursor:wait;opacity:.7}
 /* AVIO admin order spreadsheet */
 .order-table-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:18px 0 12px}.order-table-toolbar b{display:block;font:800 17px Manrope;color:#f4d77b}.order-table-toolbar small{display:block;color:#9e9b90;font-size:11px;margin-top:3px}.order-table-toolbar input{width:min(420px,100%);min-height:42px;border:1px solid #37352d;border-radius:11px;background:#10100e;color:#f5f3ed;padding:10px 13px;outline:none}.order-table-toolbar input:focus{border-color:#b9923c}.order-table-wrap{width:100%;overflow:auto;border:1px solid #37352d;border-radius:14px;background:#0d0d0b;max-height:72vh;overscroll-behavior:contain}.order-table{width:100%;min-width:1450px;border-collapse:separate;border-spacing:0;font-size:12px;line-height:1.45}.order-table th{position:sticky;top:0;z-index:2;background:#211c11;color:#e8cc75;text-align:left;font-size:10px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;padding:13px 12px;border-bottom:1px solid #5a4723}.order-table td{vertical-align:top;padding:12px;border-bottom:1px solid #282720;color:#d3d0c6;max-width:210px;overflow-wrap:anywhere}.order-table tbody tr:nth-child(even){background:#11110f}.order-table tbody tr:hover{background:#201b11}.order-table td:first-child{min-width:130px}.order-table td:first-child b{display:block;color:#f4d77b;font-size:12px}.order-table td small{display:block;color:#99958a;font-size:10px;margin-top:4px;white-space:normal}.order-table .order-customer{font-weight:700;color:#f5f3ed;min-width:130px}.order-table td a{color:#8de0a1;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}.order-table .order-trx{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;min-width:135px}.order-table .order-brief{min-width:180px;max-width:250px}.order-table td:nth-child(6){min-width:190px}.order-table td:nth-child(8){white-space:nowrap;color:#f4d77b}.order-status-select{width:150px;max-width:100%;min-height:38px;padding:8px 9px;border:1px solid #454034;border-radius:9px;background:#14130f;color:#f2eee2;font-size:11px;cursor:pointer}.order-status-select:focus{outline:2px solid #d6ad4640;border-color:#b9923c}.order-status-select.payment-verified{border-color:#396b43;color:#a5e7ad;background:#102016}.order-status-select.payment-rejected,.order-status-select.order-cancelled{border-color:#6c3838;color:#f2a3a3;background:#211111}.order-status-select.order-completed{border-color:#396b43;color:#a5e7ad;background:#102016}.order-table-empty{padding:35px;text-align:center;color:#9e9b90}.order-filters button{white-space:nowrap}
 @media(max-width:700px){.order-table-toolbar{align-items:stretch;flex-direction:column}.order-table-toolbar input{width:100%}.order-table-wrap{max-height:68vh;border-radius:11px}.order-table{min-width:1350px}.order-table th{padding:11px 10px}.order-table td{padding:10px}.order-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.order-filters button{width:100%}}
+
+/* AVIO order register: payment-first workflow, customer history, and guarded deletion */
+.order-metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
+.order-metrics article span{overflow-wrap:anywhere}
+.order-table{min-width:1760px}
+.order-table th:nth-child(4),.order-table td:nth-child(4){min-width:155px}
+.order-table th:nth-child(5),.order-table td:nth-child(5){min-width:165px}
+.order-table .order-sender{min-width:155px;color:#f4d77b;font:700 12px ui-monospace,SFMono-Regular,Menlo,monospace}
+.order-copy{display:block;margin-top:7px;padding:5px 8px;border:1px solid #4b422b;border-radius:7px;background:#1a170f;color:#e8cc75;font-size:10px;font-weight:700;cursor:pointer}
+.order-copy:hover{border-color:#d6ad46;background:#2a2212}
+.order-table .order-history{min-width:155px}
+.order-history>b{display:block;color:#f4d77b;font-size:12px}
+.order-history>small{display:block;color:#9de0a7!important;font-size:10px;line-height:1.55;white-space:normal!important}
+.order-delete{padding:8px 11px;border:1px solid #653838;border-radius:9px;background:#241212;color:#ffb1b1;font-size:11px;font-weight:800;cursor:pointer}
+.order-delete:hover{background:#3a1717;border-color:#a44c4c}
+.order-delete-overlay{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:18px;background:#000b;backdrop-filter:blur(7px)}
+.order-delete-dialog{width:min(440px,100%);padding:25px;border:1px solid #6d3838;border-radius:20px;background:linear-gradient(145deg,#1b1715,#100f0e);box-shadow:0 25px 90px #000a}
+.order-delete-dialog .delete-warning{font-size:10px;letter-spacing:.16em;font-weight:900;color:#e99a9a}
+.order-delete-dialog h2{margin:10px 0;color:#fff;font:800 25px Manrope}
+.order-delete-dialog p{color:#c4bdb4;font-size:13px;line-height:1.7}
+.order-delete-dialog p b{color:#f4d77b}
+.order-delete-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px}
+.order-delete-actions button{min-height:42px;padding:10px 15px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer}
+.order-delete-confirm{border:1px solid #a94a4a;background:#8f2929;color:white}
+.order-delete-confirm:hover{background:#b23535}
+.order-delete-actions button:disabled{opacity:.6;cursor:wait}
+@media(max-width:1000px){.order-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.order-metrics{grid-template-columns:1fr}.order-table{min-width:1760px}.order-delete-dialog{padding:20px}}
