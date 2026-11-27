@@ -69,46 +69,83 @@ button:disabled{cursor:wait;opacity:.7}
 .productbadge,.productart>span,.productart>small{display:none!important}
 
 
-/* Mobile-first product storefront: prioritize packages and remove excess copy */
+/* Mobile responsive correction: keep the complete AVIO homepage on phones */
 @media(max-width:700px){
-  .top .nav{min-height:64px;height:auto;padding:9px 0;flex-wrap:nowrap;gap:8px}
-  .brand{gap:0;min-width:0}
-  .brandlogo{width:82px;height:30px}
+  .top .nav{min-height:68px;height:auto;padding:10px 0;flex-wrap:wrap;gap:9px}
+  .brand{min-width:0;gap:0}
+  .brandlogo{width:88px;height:30px}
   .brandtag{display:none!important}
-  .nav nav{display:none!important}
   .navactions{margin-left:auto;display:flex;gap:6px;flex-shrink:0}
   .language-switch{padding:4px 6px;font-size:10px;gap:4px}
-  .socialnav{display:none!important}
+  .socialnav{display:grid!important;width:31px;height:31px}
   .cartbutton{padding:7px 9px;font-size:11px}
-  .hero{display:none!important}
-  #packages.section{padding:22px 0 32px}
-  #packages .sectionhead{display:block;margin:0 0 16px}
-  #packages .sectionhead .eyebrow{font-size:9px;letter-spacing:.14em}
-  #packages .sectionhead h2{font-size:25px;line-height:1.12;margin:5px 0 0}
-  #packages .sectionhead h2 br{display:none}
-  #packages .sectionhead>p{display:none!important}
-  .shop:before{display:none!important}
+  .top .nav nav{display:flex!important;order:3;width:100%;max-width:100%;justify-content:flex-start;gap:20px;padding:7px 2px 5px;font-size:12px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  .top .nav nav::-webkit-scrollbar{display:none}
+  .hero{display:grid!important;grid-template-columns:1fr;gap:24px;padding:34px 0 30px;min-height:unset}
+  .hero h1{font-size:clamp(38px,11vw,54px);margin:14px 0 18px}
+  .hero-copy>p{display:block!important;font-size:14px;line-height:1.7}
+  .hero-proof{display:flex!important;margin-top:18px}
+  .hero .actions{display:flex!important;gap:9px;margin-top:20px}
+  .hero .actions a{flex:1;min-width:0;padding:11px 12px;font-size:12px;text-align:center}
+  .hero-visual{display:block!important;min-height:270px;height:auto}
+  .hero-overlay{display:flex!important;inset:auto 16px 16px;gap:12px}
+  .hero-overlay strong{font-size:clamp(27px,8vw,35px)}
+  .hero-floating{display:block!important;top:13px;left:13px;width:min(210px,72%);padding:12px}
+  .hero-floating b{font-size:17px}
+  .section{padding:42px 0}
+  .sectionhead{display:block;margin-bottom:22px}
+  .sectionhead h2{font-size:clamp(25px,7vw,32px);line-height:1.12}
+  .sectionhead>p{display:block!important;margin-top:12px;font-size:13px;line-height:1.65}
+  #packages.section{padding:42px 0}
+  #packages .sectionhead{margin-bottom:18px}
+  #packages .sectionhead h2{font-size:clamp(25px,7vw,32px)}
+  #packages .sectionhead>p{display:block!important}
   .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .product{border-radius:13px;min-width:0}
   .productart{height:auto;aspect-ratio:1.12/1}
   .productbody{padding:11px 10px 12px;gap:0}
-  .product h3{font-size:12px;line-height:1.35;min-height:0;margin:0 0 8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .product p{display:none!important}
-  .price{font-size:18px;line-height:1.2;margin:0 0 10px}
+  .product h3{font-size:12px;line-height:1.35;min-height:0;margin:0 0 7px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .product p{display:block!important;font-size:11px;line-height:1.5;margin:0 0 9px;display:-webkit-box!important;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .price{font-size:17px;line-height:1.2;margin:0 0 9px}
   .price small{font-size:10px}
-  .productbuttons{display:grid;grid-template-columns:1fr;gap:0}
-  .productbuttons .outline{display:none!important}
+  .productbuttons{display:grid;grid-template-columns:1fr;gap:7px}
+  .productbuttons .outline{display:inline-flex!important;min-height:34px;font-size:11px}
   .productbuttons .primary{width:100%;min-height:38px;padding:9px 6px;font-size:12px;border-radius:9px}
-  #services,#steps,#faq,.section.container:has(.cta){display:none!important}
+  #services,#steps,#faq,.section.container:has(.cta){display:block!important}
+  #services .services{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  #services .services article{min-height:unset;padding:14px}
+  #services .services h3{font-size:14px;margin:12px 0 6px}
+  #services .services p{font-size:12px;line-height:1.55}
+  #steps .steps{display:grid;grid-template-columns:1fr;gap:8px}
+  #steps .steps article{padding:15px 0}
+  #steps .steps h3{font-size:17px;margin:8px 0 6px}
+  #steps .steps p{font-size:13px;line-height:1.6}
+  #faq .faq-list{gap:9px}
+  #faq .faq-list details{padding:0 14px}
+  #faq .faq-list summary{font-size:13px;padding:15px 26px 15px 0}
+  #faq .faq-list details p{font-size:12px;line-height:1.65}
+  #faq .faq-bottom{display:flex;flex-direction:column;align-items:stretch;gap:12px;margin-top:18px}
+  #faq .faq-bottom .primary{width:100%}
+  .cta{display:flex!important;flex-direction:column;align-items:flex-start;gap:16px;padding:22px}
+  .cta h2{font-size:27px}
+  .cta p{font-size:13px;line-height:1.65}
+  .cta .primary{margin-top:4px;width:100%}
+  footer{padding:25px 0;font-size:12px}
+  .foot{display:flex;flex-direction:column;gap:14px}
+  .footerbrand{display:flex;flex-direction:row;align-items:center;gap:12px}
   .wa{width:48px;height:48px}
 }
-@media(max-width:380px){
-  .brandlogo{width:74px}
+@media(max-width:390px){
+  .brandlogo{width:76px}
+  .navactions{gap:4px}
   .language-switch{font-size:9px;padding:3px 5px}
+  .socialnav{width:29px;height:29px}
   .cartbutton{font-size:10px;padding:6px 7px}
+  .top .nav nav{gap:16px;font-size:11px}
   .products{gap:8px}
   .productbody{padding:9px}
   .product h3{font-size:11px}
+  .product p{font-size:10px}
   .price{font-size:16px}
-  .productbuttons .primary{font-size:11px}
+  .productbuttons .primary,.productbuttons .outline{font-size:10px}
 }
