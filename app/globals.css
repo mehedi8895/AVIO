@@ -20,3 +20,6 @@ button:disabled{cursor:wait;opacity:.7}
 .adminsuccess{color:#b8efbd!important;background:#142016;border:1px solid #345d39}
 .adminbox .primary:disabled{transform:none;box-shadow:none}
 @media(max-width:380px){.adminbox{padding:18px}.adminbox h1{font-size:25px}.adminpage{padding:24px 12px}.productbuttons .primary,.productbuttons .outline{padding:10px 5px;font-size:11px}}
+
+/* Clean, image-led package cards and simpler storefront spacing */
+.hero{padding-top:64px;padding-bottom:58px;min-height:unset}.hero-visual{min-height:360px}.productart{height:180px;background:#151512}.productart img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.82;transition:transform .35s,opacity .35s}.product:hover .productart img{transform:scale(1.04);opacity:1}.productart:after{z-index:1;pointer-events:none}.productbadge{position:absolute;z-index:2;left:12px;bottom:12px;border:1px solid #ffffff2b;background:#080808c9;color:#f2d579;border-radius:999px;padding:6px 10px;font:700 9px 'DM Sans';letter-spacing:.1em}.nav>a.adminlink{padding:10px 14px}.nav .outline{white-space:nowrap}@media(max-width:700px){.hero{padding-top:42px;padding-bottom:38px}.hero-visual{min-height:280px}.productart{height:130px}}
