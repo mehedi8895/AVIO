@@ -1,33 +1,91 @@
+import { createHmac } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-const db = createClient(
-  'https://pkvcnxxuulzglzavzwuf.supabase.co',
-  'sb_publishable_zYxVL8KCLEc52uYJ27eQSg_b1K4rRb0',
-);
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://pkvcnxxuulzglzavzwuf.supabase.co';
+const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 const MAX_BODY_BYTES = 16 * 1024;
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const PHONE_PATTERN = /^[+()\d\s.-]{6,24}$/;
+const ALLOWED_PAYMENTS = new Set(['bkash', 'nagad', 'rocket']);
+const ALLOWED_ACCOUNT_TYPES = new Set(['personal', 'agent']);
 
 function badRequest(message: string, status = 400) {
-  return NextResponse.json({ error: message }, { status });
+  return NextResponse.json({ error: message }, {
+    status,
+    headers: { 'Cache-Control': 'no-store' },
+  });
 }
 
 function cleanString(value: unknown, maxLength: number) {
   return typeof value === 'string' ? value.trim().slice(0, maxLength) : '';
 }
 
-export async function POST(req: Request) {
+function sameOrigin(req: Request) {
+  const origin = req.headers.get('origin');
+  if (!origin) return true; // Non-browser clients are still rate-limited.
   try {
-    const contentType = req.headers.get('content-type') || '';
-    if (!contentType.toLowerCase().includes('application/json')) {
-      return badRequest('Order request must be JSON.', 415);
-    }
+    const originUrl = new URL(origin);
+    const requestHost = req.headers.get('x-forwarded-host') || req.headers.get('host');
+    return !!requestHost && originUrl.host.toLowerCase() === requestHost.toLowerCase();
+  } catch {
+    return false;
+  }
+}
 
-    const contentLength = Number(req.headers.get('content-length') || 0);
-    if (contentLength > MAX_BODY_BYTES) {
-      return badRequest('Order request is too large.', 413);
+function getClientIp(req: Request) {
+  const realIp = req.headers.get('x-real-ip')?.trim();
+  if (realIp && realIp.length <= 64) return realIp;
+  const forwarded = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
+  if (forwarded && forwarded.length <= 64) return forwarded;
+  return null;
+}
+
+export async function POST(req: Request) {
+  if (!SERVICE_KEY) {
+    return badRequest('Secure order service is not configured. Please contact AVIO on WhatsApp.', 503);
+  }
+
+  if (!sameOrigin(req)) {
+    return badRequest('Cross-origin order requests are not allowed.', 403);
+  }
+
+  const contentType = req.headers.get('content-type') || '';
+  if (!contentType.toLowerCase().includes('application/json')) {
+    return badRequest('Order request must be JSON.', 415);
+  }
+
+  const contentLength = Number(req.headers.get('content-length') || 0);
+  if (Number.isFinite(contentLength) && contentLength > MAX_BODY_BYTES) {
+    return badRequest('Order request is too large.', 413);
+  }
+
+  const clientIp = getClientIp(req);
+  if (!clientIp) {
+    return badRequest('Unable to verify request source. Please try again.', 400);
+  }
+
+  // Hash IP using the private server key; raw IPs are not stored in the rate-limit table.
+  const ipHash = createHmac('sha256', SERVICE_KEY).update(clientIp).digest('hex');
+  const db = createClient(SUPABASE_URL, SERVICE_KEY, {
+    auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false },
+    global: { headers: { 'X-AVIO-Server': 'order-api' } },
+  });
+
+  try {
+    const { data: allowed, error: limitError } = await db.rpc('avio_check_order_rate_limit', {
+      p_ip_hash: ipHash,
+    });
+
+    if (limitError) {
+      return badRequest('Order service is temporarily unavailable. Please try later.', 503);
+    }
+    if (allowed !== true) {
+      return badRequest('Too many order attempts. Please wait before trying again.', 429);
     }
 
     const rawBody = await req.text();
@@ -52,14 +110,15 @@ export async function POST(req: Request) {
     const senderPhone = cleanString(b.sender_phone, 40);
     const transactionId = cleanString(b.transaction_id, 100);
     const businessDetails = cleanString(b.business_details, 2000);
+    const paymentMethod = cleanString(b.payment_method, 20);
+    const accountType = cleanString(b.account_type, 20);
 
     if (customerName.length < 2 || !PHONE_PATTERN.test(customerPhone) ||
         !PHONE_PATTERN.test(senderPhone)) {
       return badRequest('Please enter valid customer and sender details.');
     }
 
-    if (!['bkash', 'nagad', 'rocket'].includes(String(b.payment_method)) ||
-        !['personal', 'agent'].includes(String(b.account_type))) {
+    if (!ALLOWED_PAYMENTS.has(paymentMethod) || !ALLOWED_ACCOUNT_TYPES.has(accountType)) {
       return badRequest('Invalid payment selection.');
     }
 
@@ -96,16 +155,13 @@ export async function POST(req: Request) {
       p_sender_phone: senderPhone,
       p_transaction_id: transactionId,
       p_business_details: businessDetails,
-      p_payment_method: b.payment_method,
-      p_account_type: b.account_type,
+      p_payment_method: paymentMethod,
+      p_account_type: accountType,
       p_items: items,
     });
 
     if (error) {
-      return NextResponse.json(
-        { error: 'Order database is not ready yet. Please contact AVIO on WhatsApp to place this order.' },
-        { status: 503 },
-      );
+      return badRequest('Order could not be submitted. Please verify your details or contact AVIO on WhatsApp.', 400);
     }
 
     return NextResponse.json(
@@ -113,6 +169,6 @@ export async function POST(req: Request) {
       { status: 201, headers: { 'Cache-Control': 'no-store' } },
     );
   } catch {
-    return badRequest('Invalid order request.');
+    return badRequest('Order service is temporarily unavailable.', 503);
   }
 }
