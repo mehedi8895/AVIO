@@ -3,7 +3,8 @@ import { NextResponse } from 'next/server';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://pkvcnxxuulzglzavzwuf.supabase.co';
+// Order submission must always target the project where avio-order-submit is deployed.
+const SUPABASE_URL = 'https://pkvcnxxuulzglzavzwuf.supabase.co';
 const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_zYxVL8KCLEc52uYJ27eQSg_b1K4rRb0';
 const LEGACY_ANON_JWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBrdmNueHh1dWx6Z2x6YXZ6d3VmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0MDQyNTIsImV4cCI6MjEwNzk4MDI1Mn0.X_2al_Lq7trIOwhf3tM2JNn0d0GjTIvLIhJFuabmdHk';
 const MAX_BODY_BYTES = 16 * 1024;
@@ -59,8 +60,10 @@ export async function POST(req: Request) {
       signal: AbortSignal.timeout(15000),
     });
     const result = await response.json().catch(() => ({ error: 'Order service returned an invalid response.' }));
+    if (!response.ok) console.error('AVIO order Edge Function returned an error:', response.status, result.error || result.message || 'No error message');
     return NextResponse.json(result, { status: response.status, headers: { 'Cache-Control': 'no-store' } });
-  } catch {
+  } catch (err) {
+    console.error('AVIO order Edge Function request failed:', err);
     return error('Order service is temporarily unavailable. Please try again.', 503);
   }
 }
