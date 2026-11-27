@@ -7,7 +7,7 @@ create table if not exists public.avio_orders (
 );
 create table if not exists public.avio_admin_profiles (user_id uuid primary key references auth.users(id) on delete cascade, role text not null default 'owner' check(role in ('owner','admin')), created_at timestamptz not null default now());
 create or replace function public.avio_is_admin() returns boolean language sql stable security definer set search_path=public as $$ select exists(select 1 from public.avio_admin_profiles where user_id=auth.uid()); $$;
-revoke all on function public.avio_is_admin() from public; grant execute on function public.avio_is_admin() to anon,authenticated;
+revoke all on function public.avio_is_admin() from public,anon; grant execute on function public.avio_is_admin() to authenticated;
 create or replace function public.avio_bootstrap_admin() returns jsonb language plpgsql security definer set search_path=public,auth as $$ begin if auth.uid() is null then raise exception 'Sign in first'; end if; perform pg_advisory_xact_lock(740118220); if exists(select 1 from public.avio_admin_profiles) then raise exception 'AVIO admin has already been initialized'; end if; insert into public.avio_admin_profiles(user_id,role) values(auth.uid(),'owner'); return jsonb_build_object('success',true); end; $$;
 revoke all on function public.avio_bootstrap_admin() from public,anon; grant execute on function public.avio_bootstrap_admin() to authenticated;
 create or replace function public.avio_submit_order(p_customer_name text,p_customer_phone text,p_sender_phone text,p_transaction_id text,p_business_details text,p_payment_method text,p_account_type text,p_items jsonb) returns jsonb language plpgsql security definer set search_path=public as $$
@@ -31,7 +31,8 @@ begin
 end; $$;
 revoke all on function public.avio_submit_order(text,text,text,text,text,text,text,jsonb) from public; grant execute on function public.avio_submit_order(text,text,text,text,text,text,text,jsonb) to anon,authenticated;
 alter table public.avio_products enable row level security; alter table public.avio_orders enable row level security; alter table public.avio_admin_profiles enable row level security;
-drop policy if exists avio_products_public_read on public.avio_products; create policy avio_products_public_read on public.avio_products for select to anon,authenticated using(active=true or public.avio_is_admin());
+drop policy if exists avio_products_public_read on public.avio_products; create policy avio_products_public_read on public.avio_products for select to anon,authenticated using(active=true);
+drop policy if exists avio_products_admin_read on public.avio_products; create policy avio_products_admin_read on public.avio_products for select to authenticated using(public.avio_is_admin());
 drop policy if exists avio_products_admin_write on public.avio_products; create policy avio_products_admin_write on public.avio_products for all to authenticated using(public.avio_is_admin()) with check(public.avio_is_admin());
 drop policy if exists avio_orders_admin_read on public.avio_orders; create policy avio_orders_admin_read on public.avio_orders for select to authenticated using(public.avio_is_admin());
 drop policy if exists avio_orders_admin_update on public.avio_orders; create policy avio_orders_admin_update on public.avio_orders for update to authenticated using(public.avio_is_admin()) with check(public.avio_is_admin());
