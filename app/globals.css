@@ -60,3 +60,10 @@ button:disabled{cursor:wait;opacity:.7}
 /* Fix product artwork: preserve the actual uploaded cover and remove accidental pseudo-element overlays/masks. */
 .productart:before,.productart:after{content:none!important;display:none!important}
 .productart>img{z-index:0;opacity:1;filter:none;transform:none;object-fit:cover}
+
+/* Clean product artwork: show the cover image itself, without any overlay decorations */
+.productart{position:relative;display:block;overflow:hidden;padding:0;background:#10100e!important;isolation:isolate}
+.productart:before,.productart:after{content:none!important;display:none!important;background:none!important;border:0!important;box-shadow:none!important;filter:none!important;opacity:0!important}
+.productart>img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center;opacity:1!important;filter:none!important;transform:none!important;transition:none!important;z-index:0}
+.product:hover .productart>img{opacity:1!important;transform:none!important}
+.productbadge,.productart>span,.productart>small{display:none!important}
